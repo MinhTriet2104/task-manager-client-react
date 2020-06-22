@@ -26,14 +26,14 @@ class Dashboard extends Component {
   componentDidMount = () => {
     this.getStoryDetails();
     this.getData();
-    setInterval(() => {
-      this.getData();
-    }, 2000);
+    // setInterval(() => {
+    //   this.getData();
+    // }, 2000);
   };
 
   getStoryDetails = () => {
     axios
-      .get(`/story`)
+      .get(`https://5e8818e919f5190016fed301.mockapi.io/api/project`)
       .then((r) => {
         this.setState({
           stories: r.data,
@@ -55,8 +55,9 @@ class Dashboard extends Component {
 
   getData = () => {
     axios
-      .get(`/tasks/${this.props.params.id}`)
+      .get(`https://5e8818e919f5190016fed301.mockapi.io/api/task`)
       .then((r) => {
+        console.log("getData:", r.data);
         this.setState({
           tasks: r.data,
           err: "",
