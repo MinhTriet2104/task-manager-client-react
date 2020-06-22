@@ -1,6 +1,6 @@
-import React,{Component} from 'react';
-import { Tooltip } from 'reactstrap';
-import AddTask from './forms/addTask';
+import React, { Component } from "react";
+import { Tooltip } from "reactstrap";
+import AddTask from "./forms/addTask";
 
 class Tooltips extends Component {
   constructor(props) {
@@ -8,25 +8,34 @@ class Tooltips extends Component {
 
     this.toggle = this.toggle.bind(this);
     this.state = {
-      tooltipOpen: false
+      tooltipOpen: false,
     };
   }
 
   toggle() {
     this.setState({
-      tooltipOpen: !this.state.tooltipOpen
+      tooltipOpen: !this.state.tooltipOpen,
     });
   }
 
   render() {
     return (
       <span>
-        <i className="fas fa-question-circle" id={'Tooltip-' + this.props.id} data-toggle="tooltip"></i>
-        <Tooltip placement={this.props.placement} isOpen={this.state.tooltipOpen} target={'Tooltip-' + this.props.id} toggle={this.toggle}>
+        <i
+          className="fas fa-question-circle"
+          id={"Tooltip-" + this.props.id}
+          data-toggle="tooltip"
+        ></i>
+        <Tooltip
+          placement={this.props.placement}
+          isOpen={this.state.tooltipOpen}
+          target={"Tooltip-" + this.props.id}
+          toggle={this.toggle}
+        >
           {this.props.content}
         </Tooltip>
-        
-        <AddTask storyType={this.props.storyType} status={this.props.id}/>
+
+        <AddTask storyType={this.props.storyType} status={this.props.id} />
       </span>
     );
   }
