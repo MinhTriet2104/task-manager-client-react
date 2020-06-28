@@ -8,7 +8,7 @@ const IndexPage = () => {
     <div>
       Welcome to Scrum Master
       <br />
-      <a href="/story/1">Homepage</a>
+      <a href="/project/1">Homepage</a>
     </div>
   );
 };
@@ -18,14 +18,14 @@ const NotFoundPage = () => {
     <div>
       <h2>Not Found</h2>
       <br />
-      <a href="/story/1">Homepage</a>
+      <a href="/project/1">Homepage</a>
     </div>
   );
 };
 
 export default (
   <Route>
-    <Route path="/story/:id" exact component={App} />
+    <Route path="/project/:id" exact component={App} />
     <Route path="/about" exact component={About} />
     <Route exact path="/" component={IndexPage} />
     <Route path="*" exact component={NotFoundPage} />

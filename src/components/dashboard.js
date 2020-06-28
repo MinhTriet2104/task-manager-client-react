@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { Link } from "react-router";
-import Story from "./story";
+import Project from "./Project";
 import AddStory from "./forms/addStory";
 import Loader from "./loader";
 import Header from "./common/header";
@@ -12,90 +12,105 @@ class Dashboard extends Component {
     this.state = {
       open: false,
       show: true,
-      tasks: [],
-      stories: [],
+      projects: [],
       err: "",
-      err2: "",
-      loading: true,
-      loadingStory: true,
+      // err2: "",
+      // loading: true,
+      loadingProject: true,
     };
 
-    this.getData = this.getData.bind(this);
+    this.getProjects = this.getProjects.bind(this);
   }
 
   componentDidMount = () => {
-    this.getStoryDetails();
-    this.getData();
+    // this.getStoryDetails();
+    this.getProjects();
     // setInterval(() => {
     //   this.getData();
     // }, 2000);
   };
 
-  getStoryDetails = () => {
+  getProjects = () => {
     axios
-      .get(`https://5e8818e919f5190016fed301.mockapi.io/api/project`)
+      .get(`http://localhost:2104/project`)
       .then((r) => {
+        console.log("getProjects", r.data);
         this.setState({
-          stories: r.data,
-          err2: "",
-        });
-      })
-      .then(() => {
-        this.setState({
-          loadingStory: false,
-        });
-      })
-      .catch((e) => {
-        this.setState({
-          loadingStory: false,
-          err2: e,
-        });
-      });
-  };
-
-  getData = () => {
-    axios
-      .get(`https://5e8818e919f5190016fed301.mockapi.io/api/task`)
-      .then((r) => {
-        console.log("getData:", r.data);
-        this.setState({
-          tasks: r.data,
+          projects: r.data,
           err: "",
         });
       })
       .then(() => {
         this.setState({
-          loading: false,
+          loadingProject: false,
         });
       })
       .catch((e) => {
-        if (!e.response) {
-          this.setState({
-            loading: true,
-            err: e,
-          });
-        } else
-          this.setState({
-            loading: false,
-            err: e,
-          });
+        this.setState({
+          loadingProject: false,
+          err: e,
+        });
       });
   };
+
+  // getData = () => {
+  //   axios
+  //     .get(`https://5e8818e919f5190016fed301.mockapi.io/api/task`)
+  //     .then((r) => {
+  //       console.log("getData:", r.data);
+  //       this.setState({
+  //         tasks: r.data,
+  //         err: "",
+  //       });
+  //     })
+  //     .then(() => {
+  //       this.setState({
+  //         loading: false,
+  //       });
+  //     })
+  //     .catch((e) => {
+  //       if (!e.response) {
+  //         this.setState({
+  //           loading: true,
+  //           err: e,
+  //         });
+  //       } else
+  //         this.setState({
+  //           loading: false,
+  //           err: e,
+  //         });
+  //     });
+  // };
+
   render() {
-    let { stories, loadingStory } = this.state;
-    let storyTable;
-    if (!loadingStory)
-      storyTable = stories.map((story, index) => {
+    let { projects, loadingProject } = this.state;
+    let storyTable, projectRender;
+
+    if (!loadingProject) {
+      const projectId = projects.find(
+        (project) => project._id === this.props.router.params.id
+      )._id;
+
+      storyTable = projects.map((project, index) => {
         return (
           <li key={index}>
-            <Link to={`/story/${story.storyId}`} activeClassName="active">
+            <Link to={`/project/${project._id}`} activeClassName="active">
               <i className="fas fa-list-alt"></i>
-              <span className="menu-text">{story.title}</span>
+              <span className="menu-text">{project.name}</span>
             </Link>
           </li>
         );
       });
-    else
+
+      projectRender = (
+        <Project
+          projectId={projectId}
+          // storyType={this.props.params.id}
+          // tasks={this.state.tasks}
+          // loading={this.state.loading}
+        />
+      );
+    } else {
       storyTable = (
         <li>
           <div className="loader">
@@ -103,6 +118,16 @@ class Dashboard extends Component {
           </div>
         </li>
       );
+
+      projectRender = (
+        <li>
+          <div className="loader">
+            <Loader />
+          </div>
+        </li>
+      );
+    }
+
     return (
       <div>
         <div className="side">
@@ -114,16 +139,7 @@ class Dashboard extends Component {
         </div>
         <div className="con">
           <Header />
-          <aside>
-            <Story
-              storyName={this.state.stories.filter(
-                (i) => i.storyId === parseInt(this.props.router.params.id)
-              )}
-              storyType={this.props.params.id}
-              tasks={this.state.tasks}
-              loading={this.state.loading}
-            />
-          </aside>
+          <aside>{projectRender}</aside>
         </div>
       </div>
     );

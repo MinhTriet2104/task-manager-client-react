@@ -1,10 +1,13 @@
 import React, { Component } from "react";
+
 import moment from "moment";
-import ModalExampleDimmer from "./modal";
+// import ModalExampleDimmer from "./modal";
 import axios from "axios";
 import $ from "jquery";
 import "jquery-ui-dist/jquery-ui";
+
 import Loader from "./loader";
+
 class Task extends Component {
   componentWillReceiveProps() {
     $(".mcell-task").draggable({
@@ -25,21 +28,24 @@ class Task extends Component {
       },
     });
   }
-  api = (id) => {
-    axios
-      .delete("/tasks/delete/" + id)
-      .then(function (response) {
-        if (response.status === "1") alert("ok");
-        console.log(response);
-      })
-      .then(() => {})
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
+
+  // api = (id) => {
+  //   axios
+  //     .delete("/tasks/delete/" + id)
+  //     .then(function (response) {
+  //       if (response.status === "1") alert("ok");
+  //       console.log(response);
+  //     })
+  //     .then(() => {})
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
+  // };
+
   render() {
     const { tasks, loading, filter } = this.props;
     let content;
+
     if (loading) {
       content = (
         <div className="loader">
@@ -48,37 +54,37 @@ class Task extends Component {
       );
     } else {
       content = tasks
-        .filter((i) => i.status === Number(filter))
-        .map((i, index) => {
+        .filter((task) => task.status === Number(filter))
+        .map((task, index) => {
           return (
-            <li id={i._id} className="mcell-task" key={index}>
+            <li id={task._id} className="mcell-task" key={index}>
               <span className="task-name">
-                <span>{i.title}</span>
+                <span>{task.name}</span>
                 <i
                   id="delete"
                   className="fas fa-times"
-                  onClick={() => this.api(i._id)}
+                  // onClick={() => this.api(task._id)}
                 ></i>
               </span>
-              <span className="task-details">{i.content}</span>
+              <span className="task-details">{task.content}</span>
               <div>
                 <span className="task-due">
-                  {moment(i.dueDate).format("DD.MM.YYYY")}
+                  {moment(task.dueDate).format("DD.MM.YYYY")}
                 </span>
                 <span className="task-contributors">
                   <img
-                    alt={
-                      i.contributors[0].name + " " + i.contributors[0].lastName
+                    alt={task.assignee.name}
+                    title={task.assignee.name}
+                    src={
+                      task.assignee.name
+                        ? task.assignee.name
+                        : "https://i.imgur.com/5bh5qpe.jpg"
                     }
-                    title={
-                      i.contributors[0].name + " " + i.contributors[0].lastName
-                    }
-                    src={"/assets/img/" + i.contributors[0].profilePhoto}
                   />
                 </span>
               </div>
-              <div className={i.color} />
-              <ModalExampleDimmer propContent={i} classType="btnDashboard" />
+              <div className={"colorGreen"} />
+              {/* <ModalExampleDimmer propContent={task} classType="btnDashboard" /> */}
             </li>
           );
         });
