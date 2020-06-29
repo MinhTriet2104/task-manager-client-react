@@ -59,8 +59,7 @@ export default class Project extends Component {
   };
 
   render() {
-    const { _id, name, tasks } = this.state.project;
-    console.log(tasks);
+    const { name, tasks } = this.state.project;
 
     return (
       <div className="container">
@@ -75,7 +74,7 @@ export default class Project extends Component {
                 id="1"
                 content="You can do what you want to do with this column"
                 placement="top"
-                storyType={_id}
+                projectId={this.props.projectId}
               />
             </div>
             <Task tasks={tasks} loading={this.state.loading} filter="1" />
@@ -87,7 +86,7 @@ export default class Project extends Component {
                 id="2"
                 content="You can do what you want to do with this column"
                 placement="top"
-                storyType={_id}
+                projectId={this.props.projectId}
               />
             </div>
             <Task tasks={tasks} loading={this.state.loading} filter="2" />
@@ -100,7 +99,7 @@ export default class Project extends Component {
                 id="3"
                 content="You can do what you want to do with this column"
                 placement="top"
-                storyType={_id}
+                projectId={this.props.projectId}
               />{" "}
             </div>
             <Task tasks={tasks} loading={this.state.loading} filter="3" />
@@ -112,7 +111,7 @@ export default class Project extends Component {
                 id="4"
                 content="You can do what you want to do with this column"
                 placement="top"
-                storyType={_id}
+                projectId={this.props.projectId}
               />{" "}
             </div>
             <Task tasks={tasks} loading={this.state.loading} filter="4" />

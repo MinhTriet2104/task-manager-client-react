@@ -9,38 +9,40 @@ import "jquery-ui-dist/jquery-ui";
 import Loader from "./loader";
 
 class Task extends Component {
-  componentWillReceiveProps() {
-    $(".mcell-task").draggable({
-      appendTo: "body",
-      cursor: "move",
-      helper: "clone",
-      revert: "invalid",
-    });
+  componentDidUpdate(prevProps) {
+    if (this.props.loading !== prevProps.loading) {
+      $(".mcell-task").draggable({
+        appendTo: "body",
+        cursor: "move",
+        helper: "clone",
+        revert: "invalid",
+      });
 
-    $(".mcell").droppable({
-      tolerance: "intersect",
-      accept: ".mcell-task",
-      activeClass: "ui-state-default",
-      hoverClass: "ui-state-hover",
-      drop: function (event, ui) {
-        $(this).append($(ui.draggable));
-        console.log($(this).find("li").attr("id"));
-      },
-    });
+      $(".mcell").droppable({
+        tolerance: "intersect",
+        accept: ".mcell-task",
+        activeClass: "ui-state-default",
+        hoverClass: "ui-state-hover",
+        drop: function (event, ui) {
+          $(this).append($(ui.draggable));
+          console.log($(this).find("li").attr("id"));
+        },
+      });
+    }
   }
 
-  // api = (id) => {
-  //   axios
-  //     .delete("/tasks/delete/" + id)
-  //     .then(function (response) {
-  //       if (response.status === "1") alert("ok");
-  //       console.log(response);
-  //     })
-  //     .then(() => {})
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     });
-  // };
+  handleDelete = (id) => {
+    axios
+      .delete("http://localhost:2104/task/" + id)
+      .then(function (response) {
+        if (response.status === 200) alert("Deleted");
+        console.log(response);
+      })
+      .then(() => {})
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   render() {
     const { tasks, loading, filter } = this.props;
@@ -63,21 +65,25 @@ class Task extends Component {
                 <i
                   id="delete"
                   className="fas fa-times"
-                  // onClick={() => this.api(task._id)}
+                  onClick={() => this.handleDelete(task._id)}
                 ></i>
               </span>
-              <span className="task-details">{task.content}</span>
+              <span className="task-details">
+                {task.description
+                  ? task.description
+                  : "This task don't have description"}
+              </span>
               <div>
                 <span className="task-due">
                   {moment(task.dueDate).format("DD.MM.YYYY")}
                 </span>
                 <span className="task-contributors">
                   <img
-                    alt={task.assignee.name}
-                    title={task.assignee.name}
+                    alt={task.assignee.username}
+                    title={task.assignee.username}
                     src={
-                      task.assignee.name
-                        ? task.assignee.name
+                      task.assignee.avatar
+                        ? task.assignee.avatar
                         : "https://i.imgur.com/5bh5qpe.jpg"
                     }
                   />

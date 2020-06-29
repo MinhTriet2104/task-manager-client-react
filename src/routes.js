@@ -8,7 +8,7 @@ const IndexPage = () => {
     <div>
       Welcome to Scrum Master
       <br />
-      <a href="/project/1">Homepage</a>
+      <a href="/project/5eeeffb55fc9ef2268b7c047">Homepage</a>
     </div>
   );
 };
@@ -18,7 +18,7 @@ const NotFoundPage = () => {
     <div>
       <h2>Not Found</h2>
       <br />
-      <a href="/project/1">Homepage</a>
+      <a href="/project/5eeeffb55fc9ef2268b7c047">Homepage</a>
     </div>
   );
 };
