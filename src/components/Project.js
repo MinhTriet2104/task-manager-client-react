@@ -4,7 +4,7 @@ import axios from "axios";
 import Task from "./task";
 import Tooltips from "./tooltip";
 
-export default class Project extends Component {
+class Project extends Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -121,3 +121,15 @@ export default class Project extends Component {
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  tasks: state.tasks,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setTasks: (tasks) => {
+    console.log(tasks);
+  },
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Project);
